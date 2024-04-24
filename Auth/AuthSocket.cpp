@@ -702,6 +702,10 @@ bool AuthSocket::_HandleLogonProof()
         sha.UpdateBigNumbers(&A, &M, &K, NULL);
         sha.Finalize();
 
+        // fixed realmd record auto conn to fast to authenticated fail
+        // In case needed sometime the second arg is in microseconds 1 000 000 = 1 sec
+        ACE_OS::sleep(ACE_Time_Value(0, 200000));
+
         SendProof(sha);
 
         ///- Set _status to authenticated
